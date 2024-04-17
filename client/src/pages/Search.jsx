@@ -22,7 +22,6 @@ export default function Search() {
     const searchTermFromURL = urlParams.get('searchTerm')
     const sortFromURL = urlParams.get('sort')
     const categoryFromURL = urlParams.get('category')
-
     setSidebarData({
       ...sidebarData,
       searchTerm: searchTermFromURL,
@@ -36,12 +35,12 @@ export default function Search() {
         const res = await fetch(`/api/post/getposts?${searchQuery}`)
         if (res.ok) {
           const data = await res.json()
-          setPosts(data.posts)
-          if (posts.length === 9) {
+          if (data.posts.length > 8) {
             setShowMore(true)
           } else {
             setShowMore(false)
           }
+          setPosts(data.posts)
         }
 
         setLoading(false)
@@ -123,7 +122,7 @@ export default function Search() {
                 type="text"
                 id="searchTerm"
                 placeholder="Search..."
-                defaultValue={sidebarData.searchTerm}
+                value={sidebarData.searchTerm}
                 onChange={handleChange}
                 />
               </div>

@@ -21,15 +21,17 @@ export default function Header() {
     const searchTermFromURL = urlParams.get('searchTerm')
     if (searchTermFromURL) {
       setSearchTerm(searchTermFromURL)
+    } else {
+      setSearchTerm('')
     }
 
   }, [location.search])
 
   const handleSubmit = async (event) => {
     event.preventDefault()
-    // const urlParams = new URLSearchParams(location.search)
-    // urlParams.set('searchTerm', searchTerm)
-    const searchQuery = `searchTerm=${searchTerm}` // urlParams.toString()
+    const urlParams = new URLSearchParams(location.search)
+    urlParams.set('searchTerm', searchTerm)
+    const searchQuery = urlParams.toString()
     navigate(`/search?${searchQuery}`)
   }
 
@@ -68,26 +70,33 @@ export default function Header() {
           placeholder='Search...'
           value={searchTerm}
           rightIcon={AiOutlineSearch}
-          className='hidden lg:inline'
+          className='hidden md:inline'
           onChange={event => setSearchTerm(event.target.value)}
         />
       </form>
 
-      <Button
-        className='bg-white h-10 w-12 lg:hidden'
-        color='gray'
-      >
-        <AiOutlineSearch/>
-      </Button>
+      <div className='h-10 w-10 border md:border-none rounded-full
+      overflow-hidden flex justify-center items-center'>
+        <Button
+          className='bg-white h-10 w-12 md:hidden'
+          color='gray'
+          onClick={() => navigate('/search?searchTerm=')}
+        >
+          <AiOutlineSearch/>
+        </Button>
+      </div>
 
       <div className='flex gap-4 items-center md:order-2'>
-        <Button
-          className='bg-white h-10 w-12 hidden sm:inline'
-          color='gray'
-          onClick={() => {dispatch(toggleTheme())}}
-        >
-          {theme === 'dark'? <FaSun/>: <FaMoon/>}
-        </Button>
+        <div className='h-10 w-10 md:w-12 border rounded-full md:rounded-lg
+        overflow-hidden flex justify-center items-center'>
+          <Button
+            className='bg-white h-10 w-12 inline'
+            color='gray'
+            onClick={() => {dispatch(toggleTheme())}}
+          >
+            {theme === 'dark'? <FaSun/>: <FaMoon/>}
+          </Button>
+        </div>
         {currentUser? (
         <Dropdown
           arrowIcon={false}
@@ -101,7 +110,7 @@ export default function Header() {
           }
         >
           <Dropdown.Header>
-            <p>{currentUser.username}</p>
+            <p>@{currentUser.username}</p>
             <p className='truncate'>{currentUser.email}</p>
           </Dropdown.Header>
           <Link to='/dashboard?tab=profile'>
