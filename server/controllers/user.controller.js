@@ -3,7 +3,8 @@ import bcryptjs from 'bcryptjs'
 import User from '../models/user.model.js'
 
 export const test = (req, res) => {
-    res.json({message: 'API is working.'})
+    const token = req.cookies.access_token
+    res.status(200).json(token ? true : false)
 }
 
 export const updateUser = async (req, res, next) => {

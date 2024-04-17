@@ -25,6 +25,16 @@ export default function Header() {
       setSearchTerm('')
     }
 
+    const fetchCookie = async () => {
+      const res = await fetch('/api/user/test')
+      const data = await res.json()
+      if (!data) {
+        dispatch(signoutSuccess())
+      }
+    }
+
+    fetchCookie()
+
   }, [location.search])
 
   const handleSubmit = async (event) => {
