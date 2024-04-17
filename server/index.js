@@ -29,12 +29,11 @@ app.use('/api/auth', authRoutes)
 app.use('/api/post', postRoutes)
 app.use('/api/comment', commentRoutes)
 
-app.use(express.static(path.join(__dirname, '/client/dist'))) // folder name will be 'dist' because we're using vite
+app.use(express.static(path.join(__dirname, '/client/dist')))
 app.get('*', (req, res) => {
-    res.sendFile(path.join(__dirname, 'dist', 'client', 'index.html'))
+    res.sendFile(path.join(__dirname, 'client', 'dist', 'index.html'))
 })
 
-// Middleware to handle errors
 app.use((err, req, res, next) => {
     const statusCode = err.statusCode || 500
     const message = err.message || 'Internal server error!!'
